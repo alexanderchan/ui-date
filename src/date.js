@@ -177,6 +177,20 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             }
           };
 
+          // Watch for changes to values in the date (and not just reference changes)
+          scope.$watch(function() {
+            if (controller && angular.isDate(controller.$modelValue)) {
+              return controller.$modelValue.getDate();
+            } else {
+              return null;
+            }
+          },
+            function() {
+              if (controller) {
+                controller.$render();
+              }
+            });
+
           // Watch for changes to the directives options
           scope.$watch(getOptions, initDateWidget, true);
         }

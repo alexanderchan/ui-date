@@ -259,6 +259,21 @@ describe('uiDate', function() {
         expect(element.datepicker('getDate')).toEqual(aDate);
       });
     });
+
+    it('should update the datepicker if the model changes', function() {
+      inject(function($compile, $rootScope) {
+        var aDate, element;
+        aDate = new Date(2010, 12, 1);
+        element = $compile('<input ui-date ng-model="x"/>')($rootScope);
+        $rootScope.$apply(function() {
+          $rootScope.x = aDate;
+        });
+        aDate.setDate(aDate.getDate() + 1);
+        $rootScope.$apply();
+        expect(element.datepicker('getDate')).toEqual(aDate);
+      });
+    });
+
     it('should put the date in the model', function() {
       inject(function($compile, $rootScope) {
         var aDate, element;
