@@ -16,9 +16,16 @@ export default angular.module('ui.date', [])
       if (value) {
         if (dateFormat) {
           try {
-            return jQuery.datepicker.formatDate(dateFormat, value);
+            var dateFormatted = jQuery.datepicker.formatDate(dateFormat, value)
+            return dateFormatted;
           } catch (formatException) {
-            return undefined;
+            try {
+              // try as converted from an iso date
+              var isoDate = new Date(value);
+              return jQuery.datepicker.formatDate(dateFormat, isoDate)
+            } catch (conversionError) {
+              return value;
+            }
           }
         }
 
@@ -38,8 +45,13 @@ export default angular.module('ui.date', [])
       }
 
       if (angular.isString(valueToParse)) {
-        if (dateFormat) {
-          return jQuery.datepicker.parseDate(dateFormat, valueToParse);
+          if (dateFormat) {
+            try {
+            var parsedDate = jQuery.datepicker.parseDate(dateFormat, valueToParse);
+            return parsedDate;
+          } catch (formatException) {
+            // Keep on trying to parse as an iso string
+          }
         }
 
         var isoDate = new Date(valueToParse);
@@ -65,8 +77,13 @@ export default angular.module('ui.date', [])
         var $element = jQuery(element);
 
         var getOptions = function() {
-          return angular.extend({}, uiDateConfig, scope.$eval(attrs.uiDate));
+          var dateFormat = {};
+          if (attrs.uiDateFormat) {
+            dateFormat = { dateFormat: attrs.uiDateFormat }
+          }
+          return angular.extend({}, uiDateConfig, dateFormat, scope.$eval(attrs.uiDate));
         };
+
         var initDateWidget = function() {
           var showing = false;
           var opts = getOptions();

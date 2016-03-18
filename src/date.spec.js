@@ -462,6 +462,7 @@ describe('uiDateFormat', function() {
       })
     });
 
+
     // it('should validate null and blank dates as valid', function() {
     //   inject(function($compile, $rootScope) {
     //     $rootScope.x = null;
@@ -498,7 +499,7 @@ describe('uiDateFormat', function() {
         expect(function incompleteValue() {
           ngModel.$setViewValue('2015-');
         }).not.toThrow();
-        expect(ngModel.$modelValue).toBeUndefined();
+        expect(ngModel.$modelValue).toBe('2015-01-01');
       });
     });
 

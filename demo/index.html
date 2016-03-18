@@ -21,6 +21,9 @@
         Read only <input type="text" ui-date ng-model="aDate" readonly>
       </div>
 
+      <div>
+        <input type="text" ui-date-format="DD, MM d, yy" ui-date ng-model="isoDate" />
+      </div>
 
       <div class="field">
         Required date: <input type="text" name="date2" required  ui-date="" ng-model="reqDate">
@@ -39,7 +42,8 @@
     <script>
       angular.module('MyApp', ['ui.date'])
       .controller('MyCtrl', function($scope) {
-          $scope.aDate = '2015-10-31';
+          $scope.aDate = '1992-09-14T21:00:00.000Z';
+          $scope.isoDate = '2015-10-13T21:00:00.000Z';
           $scope.dateOptions = {
              dateFormat: 'dd.mm.yy',
           }
